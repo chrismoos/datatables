@@ -1,13 +1,68 @@
 Datatables
 ==========
 
-Introduction goes here.
+Rails plugin for adding JQuery DataTables to your application.
+
+DataTables: http://datatables.net/index
+
+Requirements:
+
+JQuery, JQuery UI, and the DataTables JQuery plugin
 
 
 Example
 =======
 
-Example goes here.
+In your controller, set up a datatables source. This is how the data is pulled from the server and returned with AJAX.
+
+Controller
+===========
+
+datatables_source :users_source, :user, :columns => [
+  :username, :fullname, {:name => "updated_at", :eval => 'obj.updated_at.getlocal.rfc2822'},
+  {:name => "Options", :method => :user_options_column}], :numResults => 10
+
+This defines a table, named users_source, for the User model.
+
+The columns are (in order):
+
+username, fullname, updated_at, and options
+
+There are two special ways to display the data for a column/row.
+
+eval:
+
+Evaluates a string, "obj" is an instance of your model in the table (in this case, a User object).
 
 
-Copyright (c) 2010 [name of plugin creator], released under the MIT license
+method:
+
+Calls a method in your controller with the instance of your model as the parameter.
+
+When defining a method for a column, an example method in your controller would be:
+
+def user_options_column(user)
+  "<a href=\"#{url_for :action => 'view', :id => user.id}\">View User</a>"
+end
+
+
+Routes
+=========
+
+Because DataTables uses AJAX to load the data in the table, you must define a route to it. The first parameter of datatables_source is a *named route*. The rails plugin uses this to link the HTML for your DataTable.
+
+Example
+=========
+
+map.users_source '/datatables/user', :controller => :user, :action => :users_source
+
+
+Displaying the table
+=========================
+
+Displaying a table is probably the easiest part. In a view for your controller, you just do the following:
+
+<%= datatables :users_source %>
+
+
+Copyright (c) 2010 Chris Moos, released under the MIT license
