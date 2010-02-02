@@ -9,6 +9,18 @@ Requirements:
 
 JQuery, JQuery UI, and the DataTables JQuery plugin
 
+Features:
+
+Easy definition of a table for an ActiveRecord model.
+Supports pagination.
+
+
+TODO
+=======
+
+Add tests.
+Add sorting.
+
 
 Example
 =======
